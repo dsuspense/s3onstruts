@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>S3onStruts</display-name>
+
+	<!-- Standard Action Servlet Configuration (with debugging) -->
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>
+			org.apache.struts.action.ActionServlet
+		</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/struts-config.xml</param-value>
+		</init-param>
+		<!-- module configurations -->
+		<!-- 
+			<init-param>
+			<param-name>config/module1</param-name>
+			<param-value>/WEB-INF/module1/struts-config.xml</param-value>
+			</init-param>
+		-->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<init-param>
+			<param-name>detail</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<!-- Standard Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- The Usual Welcome File List -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Struts Tag Library Descriptors -->
+	<taglib>
+		<taglib-uri>/tags/struts-bean</taglib-uri>
+		<taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/struts-html</taglib-uri>
+		<taglib-location>/WEB-INF/struts-html.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/struts-logic</taglib-uri>
+		<taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/struts-nested</taglib-uri>
+		<taglib-location>/WEB-INF/struts-nested.tld</taglib-location>
+	</taglib>
+	<taglib>
+		<taglib-uri>/tags/struts-tiles</taglib-uri>
+		<taglib-location>/WEB-INF/struts-tiles.tld</taglib-location>
+	</taglib>
+
+</web-app>

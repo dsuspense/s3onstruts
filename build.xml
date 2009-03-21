@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="package" name="S3 on Struts">
+
+	<property environment="env"/>
+	
+	<!-- Update this property with your Tomcat install directory -->
+	<property name="tomcat" value="C:/apache-tomcat-5.5.17" />
+	
+	<!-- Clean distribution directory -->
+	<target name="clean">
+		<delete>
+			<fileset dir="build" includes="**/*.class" />
+		</delete>
+		<delete>
+			<fileset dir="lib" includes="**/*.jar" />
+		</delete>
+		<delete dir="war" />
+		<delete dir="dist" />
+	</target>
+	
+	<target name="deploy" depends="package">
+		<!-- Copy S3onStruts.war to $tomcat -->
+		<copy todir="${tomcat}/webapps">
+			<fileset dir="war" includes="S3onStruts.war" />
+		</copy>
+	</target>
+	
+	<target name="compile" depends="clean">
+		<javac srcdir="src" destdir="build" debug="on" verbose="off">
+			<classpath>
+				<fileset dir="WebContent/WEB-INF/lib" />
+				<fileset dir="${tomcat}/common/lib" />
+			</classpath>		
+		</javac>
+		<jar destfile="lib/S3onStruts.jar">
+			<fileset dir="build" includes="**/*.class" />
+		</jar>
+	</target>
+	
+	<target name="package" depends="compile" description="Build S3 on Struts">
+		
+		<!-- Make distribution directory -->
+		<mkdir dir="dist" />
+		<mkdir dir="dist/S3onStruts" />
+		<mkdir dir="dist/S3onStruts/META-INF" />
+		<mkdir dir="dist/S3onStruts/WEB-INF" />
+		<mkdir dir="dist/S3onStruts/WEB-INF/lib" />
+		<mkdir dir="dist/S3onStruts/WEB-INF/classes" />
+		<mkdir dir="dist/S3onStruts" />
+		<mkdir dir="war" />
+		
+		<!-- Copy context.xml (used by Tomcat 5.5.x) -->
+		<copy todir="dist/S3onStruts/META-INF">
+			<fileset dir="WebContent/META-INF" includes="context.xml" />
+		</copy>
+		
+		<!-- Copy web app config files -->
+		<copy todir="dist/S3onStruts/WEB-INF">
+			<fileset dir="WebContent/WEB-INF" includes="*.xml" />
+			<fileset dir="WebContent/WEB-INF" includes="*.tld" />
+			<fileset dir="WebContent/WEB-INF" includes="*.dtd" />
+		</copy>
+		
+		<!-- Copy web app jar files -->
+		<copy todir="dist/S3onStruts/WEB-INF/lib">
+			<fileset dir="lib" includes="*.jar" />
+			<fileset dir="WebContent/WEB-INF/lib" includes="*.jar" />
+		</copy>
+		
+		<!-- Copy web app JSPs and HTML files -->
+		<copy todir="dist/S3onStruts">
+			<fileset dir="WebContent" includes="*.jsp" />
+			<fileset dir="WebContent" includes="*.html" />
+		</copy>
+		
+		<!-- Copy web app CSS files -->
+		<copy todir="dist/S3onStruts/css">
+			<fileset dir="WebContent/css" />
+		</copy>
+		
+		<!-- Copy web app Image files -->
+		<!--
+		<copy todir="dist/S3onStruts/images">
+			<fileset dir="WebContent/images" />
+		</copy>
+		-->
+		
+		<!-- Copy web app JavaScript files -->
+		<!--
+		<copy todir="dist/S3onStruts/scripts">
+			<fileset dir="WebContent/scripts" />
+		</copy>
+		-->
+		
+	    <war destfile="war/S3onStruts.war" webxml="dist/S3onStruts/WEB-INF/web.xml">
+	      <fileset dir="dist/S3onStruts"/>
+	    </war>		
+		
+	</target>
+	
+</project>

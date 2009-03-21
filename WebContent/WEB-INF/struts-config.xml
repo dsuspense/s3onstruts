@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<struts-config>
+
+	<!-- Form Bean Definitions  -->
+	<form-beans>
+		<!-- S3 Login form bean -->
+		<form-bean name="s3LoginForm"
+			type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="s3AccessKeyId" type="java.lang.String"
+				initial="" />
+			<form-property name="s3SecretAccessKey"
+				type="java.lang.String"
+				initial="" />
+		</form-bean>
+		<!-- Create bucket form bean -->
+		<form-bean name="createBucketForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="bucketName"
+				type="java.lang.String"
+				initial="" />
+		</form-bean>
+		<!-- Upload item form bean -->
+		<form-bean name="uploadItemForm" type="org.apache.struts.validator.DynaValidatorForm">
+			<form-property name="newItem"
+				type="org.apache.struts.upload.FormFile" />
+		</form-bean>
+	</form-beans>
+	
+	<!-- Global Forward Definitions  -->
+	<global-forwards>
+		<forward name="s3login" path="/s3login.jsp" />
+		<forward name="bucketlist" path="/bucketlist.jsp" />
+		<forward name="itemlist" path="/itemlist.jsp" />
+	</global-forwards>
+	
+	<!-- Action Mapping Definitions -->
+	<action-mappings>
+	
+		<!-- S3 Login Submit Action -->
+		<action path="/s3login-submit"
+			type="com.silvasoftinc.s3onstruts.action.S3LoginAction"
+			name="s3LoginForm" scope="request" validate="true" input="input">
+			<set-property property="cancellable" value="true" />
+			<forward name="input" path="/s3login.jsp" />
+			<forward name="cancel" path="/s3login.jsp" />
+			<forward name="failure" path="/s3login.jsp" />
+			<forward name="success" path="/bucketlist.jsp" />
+		</action>
+	
+		<!-- List Bucket Action -->
+		<action path="/listBucket"
+			type="com.silvasoftinc.s3onstruts.action.S3ListBucketAction">
+			<forward name="success" path="/itemlist.jsp" />
+		</action>			 
+	
+		<!-- Bucket Actions -->
+		<action path="/deleteBucket"
+			type="com.silvasoftinc.s3onstruts.action.BucketAction"
+			parameter="delete">
+			<forward name="success" path="/bucketlist.jsp" />
+		</action>
+		<action path="/setBucketACL"
+			type="com.silvasoftinc.s3onstruts.action.BucketAction"
+			parameter="setACL">
+			<forward name="success" path="/bucketlist.jsp" />
+		</action>
+		<action path="/createBucket"
+			type="com.silvasoftinc.s3onstruts.action.CreateBucketAction"
+			name="createBucketForm">
+			<forward name="success" path="/bucketlist.jsp" />
+		</action>
+	
+		<!-- Item Actions -->
+		<action path="/deleteItem"
+			type="com.silvasoftinc.s3onstruts.action.ItemAction"
+			parameter="delete">
+			<forward name="success" path="/itemlist.jsp" />
+		</action>
+		<action path="/setItemACL"
+			type="com.silvasoftinc.s3onstruts.action.ItemAction"
+			parameter="setACL">
+			<forward name="success" path="/itemlist.jsp" />
+		</action>
+		<action path="/uploadItem"
+			type="com.silvasoftinc.s3onstruts.action.UploadItemAction"
+			name="uploadItemForm">
+			<forward name="success" path="/itemlist.jsp" />
+		</action>
+		
+	</action-mappings>
+	
+	<!-- Controller Definition  -->
+	<controller inputForward="true" />
+	
+	<!-- Message Resources Definitions  -->
+	<message-resources parameter="MessageResources" />
+	
+	<!-- Plug Ins Configuration  -->
+	<!-- 
+		Add multiple validator resource files by setting the pathnames property 
+		with a comma delimitted list of resource files to load. 
+	-->
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml" />
+		<set-property property="stopOnFirstError" value="true" />
+	</plug-in>
+	
+</struts-config>

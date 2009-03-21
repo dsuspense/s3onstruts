@@ -1,0 +1,4 @@
+<Context path="/S3onStruts" reloadable="true" docBase="${catalina.home}\webapps\S3onStruts" workDir="${catalina.home}\work" >
+	<Logger className="org.apache.catalina.logger.SystemOutLogger" verbosity="4" timestamp="true"/>
+</Context>
+
